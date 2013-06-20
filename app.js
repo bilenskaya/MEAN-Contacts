@@ -59,7 +59,7 @@ app.post('/api/contacts', function(req, res) {
 		email: 'test@test.test',
 		phone: '523-262-2362'
 	}).save(function(err, docs) {
-		res.redirect('/');
+		res.send(docs);
 	});
 });
 
@@ -73,41 +73,28 @@ app.get('/api/contacts/:name', function(req, res) {
 	});
 });
 app.post('/api/contacts/:name', function(req, res) {
-	var contactToEdit = Contact.findOne({clean: req.params.name});
-	if(typeof contactToEdit === 'undefined') {
-		var b = req.body,
+	var b = req.body,
 		clean = b.name.first + b.name.last,
 		clean = clean.toLowerCase();
 
-		new Contact({
-			clean: clean,
-			name: {
-				first: b.name.first,
-				last: b.name.last
-			},
-			email: b.email,
-			phone: b.phone
-		}).save(function(err, docs) {
-			res.redirect('/');
-		});
-	} else {
-		contactToEdit.update({
-			clean: clean,
-			name: {
-				first: b.name.first,
-				last: b.name.last
-			},
-			email: b.email,
-			phone: b.phone
-		});
-	}
-	res.redirect('/');
-});
-app.delete('/api/contacts/:name', function(req, res) {
-	Contact.remove({clean: req.params.name}, function(err) {
-		res.redirect('/');
+	Contact.update({clean: req.params.name}, {
+		clean: clean,
+		name: {
+			first: b.name.first,
+			last: b.name.last
+		},
+		email: b.email,
+		phone: b.phone
+	}, function(err, docs) {
+		res.send(docs);
 	});
+	
 });
+// app.delete('/api/contacts/:name', function(req, res) {
+// 	Contact.remove({clean: req.params.name}, function(err) {
+// 		res.redirect('/');
+// 	});
+// });
 app.get('/', function(req, res) {
 	res.render('index.html', {layout: null}); // , {layout: null}
 });

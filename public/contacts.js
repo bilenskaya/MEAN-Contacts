@@ -12,8 +12,11 @@ angular
 			});
 		$locationProvider.html5Mode(true);
 	})
-	.controller('EditCtrl', function ($scope, $resource, $routeParams) {
-		$scope.contact = $resource('/api/contacts/:name', {name: '@clean'}).get({name: $routeParams.name});
+	.factory('Contact', function($resource) {
+		return $resource('/api/contacts/:name', {name: '@clean'});
+	})
+	.controller('EditCtrl', function ($scope, $resource, $routeParams, Contact) {
+		$scope.contact = Contact.get({name: $routeParams.name});
 
 		// $save is part of angular
 		$scope.save = function() {
@@ -22,8 +25,8 @@ angular
 			});
 		};
 	})
-	.controller('TableCtrl', function ($scope, $resource) {
-		$scope.contacts = $resource('/api/contacts', {name: '@clean'}).query();
+	.controller('TableCtrl', function ($scope, $resource, Contact) {
+		$scope.contacts = Contact.query();
 	});
 
 	// Add name: '@clean' to populate that property when posting. @ means it will be
