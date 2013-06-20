@@ -85,8 +85,8 @@ app.post('/api/contacts/:name', function(req, res) {
 		},
 		email: b.email,
 		phone: b.phone
-	}, function(err, docs) {
-		res.send(docs);
+	}, function(err) {
+		res.send(b);
 	});
 	
 });
