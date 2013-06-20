@@ -1,0 +1,19 @@
+{
+  "name": "contacts2",
+  "version": "0.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app"
+  },
+  "dependencies": {
+      "express": "*",
+      "mongoose": "*"
+  },
+  "devDependencies": {
+      "nodemon": "*"
+  },
+  "repository": "",
+  "author": "",
+  "license": "BSD"
+}

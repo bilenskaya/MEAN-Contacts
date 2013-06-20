@@ -1,0 +1,13 @@
+<h3>All</h3>
+<table>
+	<tr>
+		<th>Name</th>
+		<th>Email</th>
+		<th>Phone Number</th>
+	</tr>
+	<tr ng-repeat="contact in contacts">
+		<td><a href="/contact/{{contact.clean}}">{{contact.name.first}} {{contact.name.last}}</a></td>
+		<td>{{contact.email}}</td>
+		<td>{{contact.phone}}</td>
+	</tr>
+</table>
