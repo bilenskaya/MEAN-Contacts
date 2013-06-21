@@ -1,10 +1,10 @@
 {
-  "name": "contacts2",
-  "version": "0.0.0",
-  "description": "",
+  "name": "MEAN-Contacts",
+  "version": "0.0.1",
+  "description": "This is a simple contacts manager written using the MEAN (MongoDB, Express, Angular, Node) stack. The backend is simplified into one file right now. ",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app"
+    "start": "node app"
   },
   "dependencies": {
       "express": "*",
@@ -13,7 +13,7 @@
   "devDependencies": {
       "nodemon": "*"
   },
-  "repository": "",
-  "author": "",
+  "repository": "https://github.com/javier-p/MEAN-Contacts",
+  "author": "javier-p",
   "license": "BSD"
 }
