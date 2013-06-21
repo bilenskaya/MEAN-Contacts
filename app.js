@@ -29,6 +29,7 @@ var ContactSchema = new Schema({
 //=======================
 app.set('port', process.env.PORT || 3000)
    .set('views', __dirname + '/views')
+   // Use ejs to render normal html files simply
    .engine('html', require('ejs').renderFile)
    .use(express.bodyParser())
    .use(express.methodOverride())
@@ -41,7 +42,7 @@ app.set('port', process.env.PORT || 3000)
 //  API
 //=======================
 /**
- * Collection: Use get on '/contacts' and post on '/contacts'
+ * Collection
  */
 app.get('/api/contacts', function(req, res) {
 	Contact.find({}, function(err, contacts) {
@@ -63,8 +64,7 @@ app.post('/api/contacts', function(req, res) {
 });
 
 /**
- * Element: Use get on '/contacts/:name', put on '/contacts/:name',
- * 			and delete on '/contacts/:name'
+ * Element
  */
 app.get('/api/contacts/:name', function(req, res) {
 	Contact.findOne({clean: req.params.name}, function(err, contact) {
@@ -96,11 +96,9 @@ app.delete('/api/contacts/:name', function(req, res) {
 		console.log('In DELETE');
 		console.log(req.params.name);
 	});
-	// Since it's a single page webapp below is pointless
-	// res.redirect('/');
 });
 app.get('/', function(req, res) {
-	res.render('index.html', {layout: null}); // , {layout: null}
+	res.render('index.html', {layout: null});
 });
 
 
