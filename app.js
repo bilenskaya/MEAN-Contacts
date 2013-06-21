@@ -8,7 +8,6 @@ var
 
 mongoose.connect(dbLoc);
 
-
 //=======================
 //  Database and Model
 //=======================
@@ -32,7 +31,7 @@ app.set('port', process.env.PORT || 3000)
    .set('views', __dirname + '/views')
    .engine('html', require('ejs').renderFile)
    .use(express.bodyParser())
-   // .use(express.methodOverride())
+   .use(express.methodOverride())
    .use(app.router)
    .use(express.static(__dirname + '/public'));
 
@@ -74,7 +73,7 @@ app.get('/api/contacts/:name', function(req, res) {
 });
 app.post('/api/contacts/:name', function(req, res) {
 	var b = req.body,
-		clean = b.name.first + b.name.last,
+		clean = b.name.first + '-' + b.name.last,
 		clean = clean.toLowerCase();
 
 	Contact.update({clean: req.params.name}, {
@@ -86,15 +85,20 @@ app.post('/api/contacts/:name', function(req, res) {
 		email: b.email,
 		phone: b.phone
 	}, function(err) {
+		console.log('Inside p');
 		res.send(b);
 	});
 	
 });
-// app.delete('/api/contacts/:name', function(req, res) {
-// 	Contact.remove({clean: req.params.name}, function(err) {
-// 		res.redirect('/');
-// 	});
-// });
+app.delete('/api/contacts/:name', function(req, res) {
+	Contact.remove({clean: req.params.name}, function(err) {
+		// Delete doesn't work without a callback function for some reason
+		console.log('In DELETE');
+		console.log(req.params.name);
+	});
+	// Since it's a single page webapp below is pointless
+	// res.redirect('/');
+});
 app.get('/', function(req, res) {
 	res.render('index.html', {layout: null}); // , {layout: null}
 });
