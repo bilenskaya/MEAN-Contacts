@@ -4,7 +4,7 @@ var
 	app      = express(),
 	mongoose = require('mongoose'),
 	Schema   = mongoose.Schema,
-	dbLoc    = 'mongodb://localhost/contacts3';
+	dbLoc    = 'mongodb://localhost/MEAN-contacts';
 
 mongoose.connect(dbLoc);
 
@@ -42,7 +42,7 @@ app.set('port', process.env.PORT || 3000)
 //  API
 //=======================
 /**
- * Collection
+ * Collection:  Get collection or add new contact to collection
  */
 app.get('/api/contacts', function(req, res) {
 	Contact.find({}, function(err, contacts) {
@@ -50,28 +50,30 @@ app.get('/api/contacts', function(req, res) {
 	});
 });
 app.post('/api/contacts', function(req, res) {
+	var b = req.body,
+		clean = (b.name.first + '-' + b.name.last).toLowerCase();
 	new Contact({
-		clean: 'test',
+		clean: clean,
 		name: {
-			first: 'test',
-			last: 'test'
+			first: b.name.first,
+			last: b.name.last
 		},
-		email: 'test@test.test',
-		phone: '523-262-2362'
+		email: b.email,
+		phone: b.phone
 	}).save(function(err, docs) {
 		res.send(docs);
 	});
 });
 
 /**
- * Element
+ * Element: Get element or edit element.
  */
 app.get('/api/contacts/:name', function(req, res) {
 	Contact.findOne({clean: req.params.name}, function(err, contact) {
 		res.send(contact);
 	});
 });
-app.post('/api/contacts/:name', function(req, res) {
+app.put('/api/contacts/:name', function(req, res) {
 	var b = req.body,
 		clean = b.name.first + '-' + b.name.last,
 		clean = clean.toLowerCase();
@@ -85,18 +87,20 @@ app.post('/api/contacts/:name', function(req, res) {
 		email: b.email,
 		phone: b.phone
 	}, function(err) {
-		console.log('Inside p');
 		res.send(b);
 	});
 	
 });
 app.delete('/api/contacts/:name', function(req, res) {
 	Contact.remove({clean: req.params.name}, function(err) {
-		// Delete doesn't work without a callback function for some reason
-		console.log('In DELETE');
-		console.log(req.params.name);
+		// Callback required for some reason.
+		console.log(req.params.clean + ' deleted.');
 	});
 });
+
+/**
+ * Root
+ */
 app.get('/', function(req, res) {
 	res.render('index.html', {layout: null});
 });
